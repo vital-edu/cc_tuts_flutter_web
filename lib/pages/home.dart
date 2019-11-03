@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:oneapp/services/socket.dart' as socket;
 
 class Home extends StatelessWidget {
+  hello() async {
+    try {
+      var result = await socket.connect('ws://localhost:3401');
+      print(result);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +27,7 @@ class Home extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                onPressed: () => print('hello'),
+                onPressed: () => hello(),
                 hoverColor: Color(0xff324759),
                 borderSide: BorderSide(
                   color: Color(0xff0096bfab),
