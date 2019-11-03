@@ -4,7 +4,9 @@ import 'package:oneapp/services/socket.dart' as socket;
 class Home extends StatelessWidget {
   hello() async {
     try {
-      var result = await socket.connect('ws://localhost:3401');
+      var callZome = await socket.connect('ws://localhost:3401');
+      var result =
+          await callZome('test-instance', 'hello', 'hello_holo', {'args': {}});
       print(result);
     } catch (e) {
       print(e);

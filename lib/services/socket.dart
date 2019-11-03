@@ -33,28 +33,26 @@ final ignoreFormatExceptions =
   sink.addError(error, stackTrace);
 });
 
-Future<dynamic> connect(String url) async {
-  var channel = HtmlWebSocketChannel.connect(url);
-
+dynamic connect(String url) async {
+  final channel = HtmlWebSocketChannel.connect(url);
   final ws = new json_rpc.Client(channel.cast());
-  Completer c = Completer();
 
-  try {
-    ws.sendRequest(
-      'call',
-      {
-        'instance_id': 'test-instance',
-        'zome': 'hello',
-        'function': 'hello_holo',
-        'args': {'args': {}},
-      },
-    ).then((result) {
-      c.complete(result);
-    }).catchError((error) {
-      c.completeError(error);
-    });
-    ws.listen();
-  } catch (e) {
-    c.completeError(e);
-  }
+  var callZome = (String instanceId, String zome, String func, Map args) async {
+    var callObject = {
+      'instance_id': instanceId,
+      'zome': zome,
+      'function': func,
+      ...args,
+    };
+    try {
+      var result = await ws.sendRequest('call', callObject);
+      return result;
+    } catch (e) {
+      return e;
+    }
+  };
+
+  ws.listen();
+
+  return callZome;
 }
