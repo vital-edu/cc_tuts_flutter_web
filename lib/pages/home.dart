@@ -13,6 +13,14 @@ class Home extends StatelessWidget {
     }
   }
 
+  retrievePerson(String address) async {
+    var callZome = await socket.connect('ws://localhost:3401');
+    var result = await callZome('test-instance', 'hello', 'retrieve_person', {
+      'args': {'address': address}
+    });
+    print(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +37,8 @@ class Home extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                onPressed: () => hello(),
+                onPressed: () => retrievePerson(
+                    'QmdnRuHcnFAUta5DH3x6bM9WTfouMrDuieAWYEc67xoJ2G'),
                 hoverColor: Color(0xff324759),
                 borderSide: BorderSide(
                   color: Color(0xff0096bfab),
